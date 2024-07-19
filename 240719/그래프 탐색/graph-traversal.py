@@ -1,7 +1,7 @@
 N, M = map(int, input().split())
 graph = [[0]*N for _ in range(N)]
 nodes = [False]*N
-count = 5
+count = N - 1
 
 for _ in range(M):
     a = list(map(int, input().split()))
@@ -16,9 +16,6 @@ def dfs(index):
         if graph[index][cur]==1 and not nodes[cur]:
             count -= 1
             dfs(cur)
-            # count += 1
-
-for i in range(N):
-    dfs(i)
+dfs(0)
 
 print(count)
