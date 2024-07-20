@@ -6,6 +6,8 @@ def solution(n, arr):
         count = 0
         while stack:
             cx, cy = stack.pop()
+            if arr[cx][cy]==0:
+                continue
             arr[cx][cy] = 0
             count += 1
             direction = [(1, 0), (-1, 0), (0, 1), (0, -1)]
