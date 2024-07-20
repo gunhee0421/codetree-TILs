@@ -21,7 +21,7 @@ def solution(n, arr):
                 count = dfs(i, j, arr[i][j])
                 if count > 3:
                     result[0] += 1
-                    if result[1] < count:
+                if result[1] < count:
                         result[1] = count
 
     return result
