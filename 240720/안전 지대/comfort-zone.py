@@ -10,6 +10,7 @@ def solution(k, graph):
         for j in range(len(copyGraph[i])):
             if copyGraph[i][j] <= k:
                 copyGraph[i][j] = 0 
+
     def dfs(x, y):
         copyGraph[x][y] = 0
         if x + 1 < n and copyGraph[x + 1][y] > 0:
@@ -34,7 +35,7 @@ minN = min(map(min, graph))
 maxN = max(map(max, graph))
 
 result = [1, 0]
-for i in range(minN, maxN):
+for i in range(1, maxN):
     ans = solution(i, graph)
     if ans > result[1]:
         result[0] = i
