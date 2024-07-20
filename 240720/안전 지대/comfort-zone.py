@@ -33,7 +33,7 @@ graph = [list(map(int, input().split())) for _ in range(N)]
 minN = min(map(min, graph))
 maxN = max(map(max, graph))
 
-result = [0, 0]
+result = [1, 0]
 for i in range(minN, maxN):
     ans = solution(i, graph)
     if ans > result[1]:
