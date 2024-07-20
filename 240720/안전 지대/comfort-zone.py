@@ -1,4 +1,7 @@
 import copy
+import sys
+
+sys.setrecursionlimit(10000)
 
 def solution(k, graph):
     count=0
