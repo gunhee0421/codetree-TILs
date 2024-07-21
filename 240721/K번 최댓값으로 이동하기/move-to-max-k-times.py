@@ -30,9 +30,11 @@ def solution(n, k, position, arr):
                 nx, ny = cx + dx, cy + dy
                 if 0 <= nx < n and 0 <= ny < n and graph[nx][ny] < maxNum:
                     stack.append((nx, ny))
-                
-        indexStack.sort(key=lambda x: (x[0], x[1]))
-        return indexStack[0]
+        if indexStack:
+            indexStack.sort(key=lambda x: (x[0], x[1]))
+            return indexStack[0]
+        else:
+            return (x, y)
     
     arr2 = copy.deepcopy(arr)
     x, y = bfs(position[0] - 1, position[1] - 1, arr2)
