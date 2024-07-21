@@ -17,7 +17,7 @@ def solution(n, k, arr):
         return count
 
     for i in range(len(k)):
-        an.append(bfs(k[i][0], k[i][1]))
+        an.append(bfs(k[i][0]-1, k[i][1]-1))
     return an
 
 n, k = map(int, input().split())
