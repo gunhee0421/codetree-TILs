@@ -9,6 +9,8 @@ def solution(n, k, position, arr):
         maxNum = graph[x][y]
         curMax = 0
         first = True
+        if n==1:
+            first = False
 
         while stack:
             cx, cy = stack.pop()
