@@ -4,8 +4,8 @@ def solution(n, k, m, arr, p):
     def bfs(position, graph):
         visited = [[False]*n for _ in range(n)]
         stack = [(position[0]-1, position[1]-1)]
-        if graph[position[0]-1][position[1]-1] == 1:
-            return 0
+        # if graph[position[0]-1][position[1]-1] == 1:
+        #     return 0
         visited[position[0]-1][position[1]-1] = True
         count=0
 
