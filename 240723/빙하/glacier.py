@@ -6,43 +6,32 @@ def melt_glacier(n, m, grid):
     def is_within_bounds(x, y):
         return 0 <= x < n and 0 <= y < m
 
-    def bfs(start):
-        queue = deque([start])
-        visited = set([start])
-        while queue:
-            cx, cy = queue.popleft()
-            for dx, dy in directions:
-                nx, ny = cx + dx, cy + dy
-                if is_within_bounds(nx, ny) and (nx, ny) not in visited and grid[nx][ny] == 0:
-                    visited.add((nx, ny))
-                    queue.append((nx, ny))
-        return visited
-
     time = 0
     last_melt_size = 0
     
     water_boundary = deque()
-    visited = set()
+    visited = [[False] * m for _ in range(n)]
+    
     for i in range(n):
         for j in range(m):
             if grid[i][j] == 0 and (i == 0 or i == n-1 or j == 0 or j == m-1):
                 water_boundary.append((i, j))
-                visited.add((i, j))
+                visited[i][j] = True
 
     while True:
         to_melt = set()
-        new_water_boundary = set()
+        new_water_boundary = deque()
 
-        for _ in range(len(water_boundary)):
+        while water_boundary:
             x, y = water_boundary.popleft()
             for dx, dy in directions:
                 nx, ny = x + dx, y + dy
                 if is_within_bounds(nx, ny):
                     if grid[nx][ny] == 1:
                         to_melt.add((nx, ny))
-                    elif (nx, ny) not in visited:
-                        visited.add((nx, ny))
-                        water_boundary.append((nx, ny))
+                    elif not visited[nx][ny]:
+                        visited[nx][ny] = True
+                        new_water_boundary.append((nx, ny))
 
         if not to_melt:
             break
@@ -50,9 +39,9 @@ def melt_glacier(n, m, grid):
         last_melt_size = len(to_melt)
         for x, y in to_melt:
             grid[x][y] = 0
-            new_water_boundary.update(bfs((x, y)))
+            new_water_boundary.append((x, y))
 
-        water_boundary = deque(new_water_boundary)
+        water_boundary = new_water_boundary
         time += 1
 
     return time, last_melt_size
