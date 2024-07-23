@@ -6,10 +6,17 @@ def melt_glacier(n, m, grid):
     def is_within_bounds(x, y):
         return 0 <= x < n and 0 <= y < m
 
-    def add_to_queue_if_boundary(x, y, queue, visited):
-        if is_within_bounds(x, y) and (x, y) not in visited and grid[x][y] == 0:
-            visited.add((x, y))
-            queue.append((x, y))
+    def bfs(start):
+        queue = deque([start])
+        visited = set([start])
+        while queue:
+            cx, cy = queue.popleft()
+            for dx, dy in directions:
+                nx, ny = cx + dx, cy + dy
+                if is_within_bounds(nx, ny) and (nx, ny) not in visited and grid[nx][ny] == 0:
+                    visited.add((nx, ny))
+                    queue.append((nx, ny))
+        return visited
 
     time = 0
     last_melt_size = 0
@@ -43,8 +50,9 @@ def melt_glacier(n, m, grid):
         last_melt_size = len(to_melt)
         for x, y in to_melt:
             grid[x][y] = 0
-            add_to_queue_if_boundary(x, y, water_boundary, visited)
+            new_water_boundary.update(bfs((x, y)))
 
+        water_boundary = deque(new_water_boundary)
         time += 1
 
     return time, last_melt_size
