@@ -2,7 +2,7 @@ from collections import deque
 
 def melt_glacier(n, m, grid):
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    
+
     def is_within_bounds(x, y):
         return 0 <= x < n and 0 <= y < m
 
@@ -21,6 +21,7 @@ def melt_glacier(n, m, grid):
     time = 0
     last_melt_size = 0
     
+    # Initialize water boundary with outermost water cells
     water_boundary = set()
     for i in range(n):
         for j in range(m):
@@ -37,11 +38,12 @@ def melt_glacier(n, m, grid):
 
         if not to_melt:
             break
-
+        
         last_melt_size = len(to_melt)
         for x, y in to_melt:
             grid[x][y] = 0
 
+        # Update the water boundary for the next iteration
         new_water_boundary = set()
         for x, y in to_melt:
             new_water_boundary.update(bfs((x, y)))
