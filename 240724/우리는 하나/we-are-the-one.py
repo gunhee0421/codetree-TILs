@@ -1,41 +1,41 @@
 from itertools import combinations
 from collections import deque
 
-def width_bound(x, y, n):
-    return 0<=x<n and 0<=y<n
+def is_within_bounds(x, y, n):
+    return 0 <= x < n and 0 <= y < n
 
-def bfs(x, y, graph, n, u, d):
-    directions = [(-1,0),(1,0),(0,-1),(0,1)]
-    visited = [[False] * n for _ in range(n)]
-    queue = deque([(x, y)])
-    visited[x][y] = True
+def bfs(start_x, start_y, grid, n, u, d, visited):
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    queue = deque([(start_x, start_y)])
+    visited.add((start_x, start_y))
     count = 1
-
+    
     while queue:
-        cx, cy = queue.popleft()
+        x, y = queue.popleft()
         for dx, dy in directions:
-            nx,ny = cx+dx, cy+dy
-            if width_bound(nx, ny, n) and not visited[nx][ny]:
-                height_diff = abs(graph[cx][cy] - graph[nx][ny])
-                if u<=height_diff<=d:
-                    visited[nx][ny] = True
-                    queue.append((nx,ny))
-                    count+=1
+            nx, ny = x + dx, y + dy
+            if is_within_bounds(nx, ny, n) and (nx, ny) not in visited:
+                height_diff = abs(grid[x][y] - grid[nx][ny])
+                if u <= height_diff <= d:
+                    visited.add((nx, ny))
+                    queue.append((nx, ny))
+                    count += 1
+    
     return count
 
 def solution(n, k, grid, u, d):
     max_reachable = 0
-    all_position = [(i,j) for i in range(n) for j in range(n)]
-
-    for positions in combinations(all_position, k):
+    all_positions = [(i, j) for i in range(n) for j in range(n)]
+    
+    for positions in combinations(all_positions, k):
+        visited = set()
         total_reachable = 0
-        visited_position = set()
-        for cx,cy in positions:
-            if (cx,cy) not in visited_position:
-                reachable = bfs(cx, cy, grid, n, u, d)
-                total_reachable += reachable
-                visited_position.add((cx,cy))
+        for x, y in positions:
+            if (x, y) not in visited:
+                total_reachable += bfs(x, y, grid, n, u, d, visited)
+        
         max_reachable = max(max_reachable, total_reachable)
+    
     return max_reachable
 
 n, k, u, d = map(int, input().split())
